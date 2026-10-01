@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Girlfriend Day 🌷</title>
+  <style>
+    :root {
+      --bg-color: #f7f2ea;
+      --card-bg: #fdfaf4;
+      --accent-green: #738361;
+      --text-dark: #403a38;
+      --text-sub: #7a736e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: 'Georgia', -apple-system, serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================
+       STAGE 1: ENVELOPE SCREEN
+       ========================================== */
+    #envelope-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    .envelope-wrapper {
+      width: 250px;
+      height: 170px;
+      background: #eee5d8;
+      border: 1px solid #d8ccba;
+      border-radius: 12px;
+      position: relative;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      width: 0;
+      height: 0;
+      border-left: 125px solid transparent;
+      border-right: 125px solid transparent;
+      border-top: 95px solid #e3d7c5;
+      transform-origin: top;
+      transition: transform 0.5s ease;
+    }
+
+    .wax-seal {
+      width: 38px;
+      height: 38px;
+      background: #b85058;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 45px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .tap-hint {
+      margin-top: 25px;
+      font-style: italic;
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ==========================================
+       STAGE 2: REAL WHITE TULIP FLOOD OVERLAY
+       ========================================== */
+    #bloom-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      display: none;
+      overflow: hidden;
+    }
+
+    .real-tulip {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      opacity: 0;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+      animation: floodTulips 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes floodTulips {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(var(--tx), var(--ty)) scale(1.8) rotate(var(--rot));
+      }
+      80% {
+        opacity: 0.9;
+        transform: translate(calc(var(--tx) * 1.2), calc(var(--ty) * 1.2)) scale(2.5) rotate(calc(var(--rot) + 20deg));
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(var(--tx) * 1.5), calc(var(--ty) * 1.5)) scale(3.5) rotate(calc(var(--rot) + 40deg));
+      }
+    }
+
+    /* ==========================================
+       STAGE 3: MIXTAPE & MANUAL SCROLL LETTER
+       ========================================== */
+    #main-stage {
+      display: none;
+      opacity: 0;
+      width: 100%;
+      max-width: 440px;
+      flex-direction: column;
+      gap: 18px;
+      transition: opacity 1s ease;
+      padding-bottom: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid #e6dec3;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+      text-align: center;
+      position: relative;
+    }
+
+    .header-sub {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+    }
+
+    /* Cassette Box Design */
+    .cassette-body {
+      background: #81926e;
+      border-radius: 14px;
+      padding: 16px;
+      border: 3px solid #637351;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.15);
+      margin-bottom: 15px;
+    }
+
+    .cassette-label {
+      background: #faf6ee;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px dashed #beb19d;
+    }
+
+    .tape-title {
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .artist-name {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+
+    .wheels-container {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      align-items: center;
+      background: #2b2b2b;
+      padding: 8px 0;
+      border-radius: 20px;
+    }
+
+    .wheel {
+      width: 32px;
+      height: 32px;
+      background: #fff;
+      border: 5px solid #1a1a1a;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .wheel::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: #777;
+      transform: translate(-50%, -50%);
+    }
+
+    .wheel.spin {
+      animation: spinTape 2.2s linear infinite;
+    }
+
+    @keyframes spinTape {
+      100% { transform: rotate(360deg); }
+    }
+
+    .play-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent-green);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(115, 131, 97, 0.3);
+    }
+
+    .play-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* --- PARADISE OF FLOWERS SIDE DECORATIONS --- */
+    .flower-side-left, .flower-side-right {
+      position: absolute;
+      width: 55px;
+      opacity: 0.45;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .flower-side-left {
+      top: 60px;
+      left: -18px;
+      transform: rotate(-15deg);
+    }
+
+    .flower-side-right {
+      bottom: 60px;
+      right: -18px;
+      transform: rotate(15deg) scaleX(-1);
+    }
+
+    /* Letter Box (Manual Scroll Enabled) */
+    #letter-card {
+      display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .letter-content {
+      max-height: 280px;
+      overflow-y: auto; /* Standard manual scrollable behavior */
+      padding: 0 12px;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #484340;
+      position: relative;
+      z-index: 5;
+    }
+
+    .letter-content::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .letter-content::-webkit-scrollbar-thumb {
+      background: #d4caa8;
+      border-radius: 4px;
+    }
+
+    .signature {
+      margin-top: 15px;
+      font-weight: bold;
+      color: var(--accent-green);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. ENVELOPE STAGE -->
+  <div id="envelope-stage" onclick="openEnvelope()">
+    <div class="envelope-wrapper">
+      <div class="envelope-flap" id="flap"></div>
+      <div class="wax-seal"></div>
+    </div>
+    <div class="tap-hint">Tap to open ✉️</div>
+  </div>
+
+  <!-- 2. TULIP FLOOD CONTAINER -->
+  <div id="bloom-overlay"></div>
+
+  <!-- 3. MAIN APP (CASSETTE & LETTER) -->
+  <div id="main-stage">
+
+    <div class="card">
+      <h2>Happy Girlfriend's Day, baby!</h2>
+
+      <div class="cassette-body">
+        <div class="cassette-label">
+          <div class="tape-title">Balisong</div>
+          <div class="artist-name">by: Rico Blanco</div>
+          <div class="wheels-container">
+            <div class="wheel" id="wheel1"></div>
+            <div class="wheel" id="wheel2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio Stream for Balisong -->
+      <audio id="bg-music" loop>
+        <source src="balisong.mp3" type="audio/mpeg">
+      </audio>
+
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">
+        <span id="playIcon">▶</span> <span id="playText">Play "Balisong"</span>
+      </button>
+    </div>
+
+    <!-- Letter Box framed in Paradise Bouquet Images -->
+    <div class="card" id="letter-card">
+      <!-- Side Bouquet Floral Watermarks -->
+      <img src="https://png.pngtree.com/png-vector/20250512/ourmid/pngtree-elegant-white-tulip-bouquet-png-image_16204877.png" class="flower-side-left" alt="bouquet decor">
+      <img src="https://png.pngtree.com/png-vector/20250512/ourmid/pngtree-elegant-white-tulip-bouquet-png-image_16204877.png" class="flower-side-right" alt="bouquet decor">
+
+      <div class="letter-content">
+        <p>Hello baby,</p><br>
+        <p>Happy Girlfriend Day! I know we aren't officially together yet, but in my heart, I already treat you as my girl. Before this day ends, I just really want you to know how deeply thankful and lucky I am to met you.</p><br>
+        <p>I am so proud of you, baby. Even for your smallest wins, ups and downs, I will always be right here cheering for you. I see all the silent effort you put into everything you do, even on days when you think no one notices. I know there are times you feel exhausted, overwhelmed, and quietly fighting battles you don't always talk about but yet you still choose to keep going. That resilience is one of the many reasons I admire you so much. You inspire me, and because of you, I've learned to be a strong too (<i>mahina nga lang pagdating sayo:)</i>).</p><br>
+        <p>Even though we are miles apart right now, distance hasn't changed a single thing about how I feel. In fact, when your mom invited me to visit you on this coming Christmas, I couldn't contain my joy, my heart literally leaped! HAHAHA. I am counting down the days until I can finally see you and hold you in person.</p><br>
+        <p>Thank you for being the light that makes my hardest days feel so much lighter ng hindi mo nalalaman. I promise I will never get tired of reminding you how incredible you are. If you haven't heard it today, let me say it now: I am so proud of you, and I will always be here, baby.</p><br>
+        <p>You are the best thing that life has given me, and nothing could ever take your place in my heart. The love I have for you is pure, real, and genuine. You bring so much happiness into my world that I can't even imagine a life without you anymore. Loving you has made me a better person, and with you by my side, I feel like we can take on whatever challenges life throws at us.</p><br>
+        <p>So baby, no matter how tired or heavy things feel, please always remember that you don't have to face anything alone. You can always come to me, rest with me, and just be yourself. I will always listen to you, understand you, comfort you, and be your safe place.</p><br>
+        <p>I love you and miss you so much, my pretty baby. Happy Girlfriend’s Day! 🤍</p>
+      </div>
+      <div class="signature">- jf</div>
+    </div>
+
+  </div>
+
+  <script>
+    const tulipImageUrl = 'https://png.pngtree.com/png-vector/20250512/ourmid/pngtree-elegant-white-tulip-bouquet-png-image_16204877.png';
+
+    function openEnvelope() {
+      const flap = document.getElementById('flap');
+      const envStage = document.getElementById('envelope-stage');
+      const bloomOverlay = document.getElementById('bloom-overlay');
+      const mainStage = document.getElementById('main-stage');
+
+      flap.style.transform = 'rotateX(180deg)';
+
+      setTimeout(() => {
+        envStage.style.opacity = '0';
+        envStage.style.transform = 'scale(0.8)';
+        
+        setTimeout(() => {
+          envStage.style.display = 'none';
+          floodScreenWithTulips(bloomOverlay);
+
+          setTimeout(() => {
+            bloomOverlay.style.display = 'none';
+            mainStage.style.display = 'flex';
+            setTimeout(() => {
+              mainStage.style.opacity = '1';
+            }, 50);
+          }, 1800);
+
+        }, 300);
+      }, 400);
+    }
+
+    function floodScreenWithTulips(container) {
+      container.style.display = 'block';
+      container.innerHTML = '';
+
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      const centerX = screenWidth / 2;
+      const centerY = screenHeight / 2;
+
+      const totalTulips = 75;
+
+      for (let i = 0; i < totalTulips; i++) {
+        const img = document.createElement('img');
+        img.className = 'real-tulip';
+        img.src = tulipImageUrl;
+
+        img.style.left = centerX + 'px';
+        img.style.top = centerY + 'px';
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * (Math.max(screenWidth, screenHeight) * 0.9);
+        
+        const tx = (Math.cos(angle) * distance) + 'px';
+        const ty = (Math.sin(angle) * distance) + 'px';
+        const rot = (Math.random() * 360 - 180) + 'deg';
+
+        img.style.setProperty('--tx', tx);
+        img.style.setProperty('--ty', ty);
+        img.style.setProperty('--rot', rot);
+        img.style.animationDelay = (Math.random() * 0.3) + 's';
+
+        container.appendChild(img);
+      }
+    }
+
+    let isPlaying = false;
+
+    function togglePlay() {
+      const audio = document.getElementById('bg-music');
+      const w1 = document.getElementById('wheel1');
+      const w2 = document.getElementById('wheel2');
+      const playIcon = document.getElementById('playIcon');
+      const playText = document.getElementById('playText');
+      const letterCard = document.getElementById('letter-card');
+
+      if (!isPlaying) {
+        audio.play().catch(e => console.log("Audio play allowed on click"));
+        w1.classList.add('spin');
+        w2.classList.add('spin');
+        playIcon.textContent = "⏸";
+        playText.textContent = "Playing Balisong...";
+        isPlaying = true;
+
+        letterCard.style.display = "block";
+        setTimeout(() => {
+          letterCard.style.opacity = "1";
+        }, 150);
+
+      } else {
+        audio.pause();
+        w1.classList.remove('spin');
+        w2.classList.remove('spin');
+        playIcon.textContent = "▶";
+        playText.textContent = "Resume Balisong";
+        isPlaying = false;
+      }
+    }
+  </script>
+</body>
+</html>
